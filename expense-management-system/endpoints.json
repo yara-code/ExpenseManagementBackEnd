@@ -1,0 +1,65 @@
+[
+  {
+    "path": "/ping",
+    "method": "GET",
+    "handler": "handler",
+    "require": "api/ping/Get.js",
+    "auth"   : false
+  },
+  {
+    "path": "/user/{id}",
+    "method": "GET",
+    "handler": "handler",
+    "require": "api/user/Get.js",
+    "auth"   : false
+  },
+  {
+    "path": "/user",
+    "method": "POST",
+    "handler": "handler",
+    "require": "api/user/Post.js",
+    "auth"   : false
+  },
+  {
+    "path": "/user/{id}",
+    "method": "PUT",
+    "handler": "handler",
+    "require": "api/user/Put.js",
+    "auth"   : false
+  },
+  {
+    "path": "/user/{id}",
+    "method": "DELETE",
+    "handler": "handler",
+    "require": "api/user/Delete.js",
+    "auth"   : false
+  },
+  {
+    "path": "/expense/{id}",
+    "method": "GET",
+    "handler": "handler",
+    "require": "api/user/Get.js",
+    "auth"   : false
+  },
+  {
+    "path": "/expense",
+    "method": "POST",
+    "handler": "handler",
+    "require": "api/expense/Post.js",
+    "auth"   : false
+  },
+  {
+    "path": "/expense/{id}",
+    "method": "PUT",
+    "handler": "handler",
+    "require": "api/expense/Put.js",
+    "auth"   : false
+  },
+  {
+    "path": "/expense/{id}",
+    "method": "DELETE",
+    "handler": "handler",
+    "require": "api/expense/Delete.js",
+    "auth"   : false
+  }
+]

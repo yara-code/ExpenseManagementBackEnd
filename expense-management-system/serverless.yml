@@ -1,0 +1,65 @@
+
+service: expense-management-system
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+  stage: dev
+  region: us-west-1
+
+
+functions:
+  api:
+    package:
+      include:
+        - "endpoints.json"
+        - "api/*.js"
+        - "api/**/*.js"
+        - "api/*.json"
+        - "api/**/*.json"
+    handler: api/router.handler
+    events:
+      - http:
+          path: ping
+          method: get
+          cors: true
+
+      - http:
+          path: user/{userid}
+          method: get
+          cors: true
+      - http:
+          path: user
+          method: post
+          cors: true
+      - http:
+          path: user/{userid}
+          method: put
+          cors: true
+      - http:
+          path: user/{userid}
+          method: delete
+          cors: true
+
+      - http:
+          path: expense/{userid}/{id}
+          method: get
+          cors: true
+      - http:
+          path: expense
+          method: post
+          cors: true
+      - http:
+          path: expense/{userid}/{id}
+          method: put
+          cors: true
+      - http:
+          path: expense/{userid}/{id}
+          method: delete
+          cors: true
+
+plugins:
+  - serverless-offline
