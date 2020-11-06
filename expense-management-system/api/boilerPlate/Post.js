@@ -4,25 +4,25 @@
 *
 * */
 
-//import env keys
-const keys = require("../../env")
-
-const db = require(keys().apiDB);
-const helper = require(keys().modelHeler);
+const db = require('../../mongoFiles/collection');
+const helper = require('../../model/helper');
 const Accounts = db.Accounts();
 const AuthCredentials = db.AuthCredentials();
 const dates = require('../../model/dates');
 const Password = require('../../model/password');
 const MongoClient = require('mongodb').MongoClient;
-const url = keys().mongoUrl;
+const url = "mongodb+srv://EMS-Admin:PUuABNm2m0ZUZhkA@cluster0.fqgbv.mongodb.net/EMS-DB?retryWrites=true&w=majority";
 
 module.exports.handler = (event, context, callback ) => {
 
     const body = event.body;
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
+
+        //Set open connection to mongodb:
         let dbo = db.db("EMS-DB");
 
+        // Filter search
         let filter = {
             $or: [
                 {'username': setRegex(body.username)},
@@ -32,37 +32,9 @@ module.exports.handler = (event, context, callback ) => {
 
         return Promise.resolve()
             .then(()=>{
+                // TODO: FIND --->
                 return Promise.resolve(AuthCredentials.find(dbo, filter))
-                    .then((accountCredentials)=>{
-                        console.log(`Post user inside.then in authcreds.find :`);
-                        if(accountCredentials.length > 0) {
-                            if (body.username == accountCredentials[0].username){
-                                return Promise.reject("Username already exist.");
-                            }
-                            else if (body.email == accountCredentials[0].email){
-                                return Promise.reject("Email already exist.");
-                            }
-                            else {
-                                return Promise.reject("Account already exist.");
-                            }
-                        } else {
-                            //resolve and create new account
-                            // account doesn't exist yet
-                            return Promise.resolve();
-                        }
-                    })
-            })// first .then
-            .then(( ) => {
-                console.log(`password create :`);
-                return Promise.resolve(Password.create(body.password))
-                    .catch((error ) => {
-                        return Promise.reject(error)
-                        // return Promise.reject("Could not create credential")
-                    })
-            })
             .then((passwordDetails) => {
-                console.log(`password Details : ${passwordDetails}`);
-                console.log(`-------> : ${JSON.stringify(passwordDetails, null, 3)}`);
                 let userCreds = {
                     username: body.username,
                     email: body.email,
@@ -73,7 +45,7 @@ module.exports.handler = (event, context, callback ) => {
                     accountId: ''
                 };
 
-                console.log(`creating creds next line : `);
+                // TODO: Create a record
                 return Promise.resolve(AuthCredentials.create(dbo, userCreds)) // creating auth creds record
                     .then((results ) => {
                         console.log(`this is what gets returns :`);
@@ -85,54 +57,25 @@ module.exports.handler = (event, context, callback ) => {
                         // return Promise.reject("Could not create credential")
                     })
             })
-            .then((creds ) => {
-                // .then(( ) => {
-                // TODO: create account collection
-                // _id:5cf4fb32d69884098272c612
-                // firstName:"First Name"
-                // lastName:"Last Name"
-                // username
-                // email:"test@gamil.com"
-                // authCredential:DBRef(undefined, 5cf4fc14d69884098272c617, undefined)
-
-                event.creds = creds;
-
-                let userAccount = {
-                    firstName: body.firstName,
-                    lastName: body.lastName,
-                    username: body.username,
-                    email: body.email,
-                    authCredential: creds._id
-                };
-                console.log("Accounts.create");
-                return Promise.resolve(Accounts.create(dbo, userAccount))
-                    .then((results ) => {
-                        return Promise.resolve(results.ops[0])
-                    })
-                    .catch((error ) => {
-                        // return Promise.reject("Could not create Account")
-                        return Promise.reject(error)
-                    })
-            })
             .then((results ) => {
-                console.log(`return response to api : `);
+                // TODO: NO errors, close db connection then callback to return data
                 body.accountId = results._id; // add accountID to auth creds update db
                 AuthCredentials.update(event.creds._id, {$set : {accountId: body.accountId} });
-                // return account info or do that in the front end to log user inn
                 body.responseMessage =  "Account Created Successfully";
                 console.log(`body : ${JSON.stringify(body, null, 3)}`);
                 db.close();
                 callback(null, {statusCode: 200, body: JSON.stringify(body)});
             })
             .catch ((error ) => {
+                // TODO: ERRORS Clsoe db and callback response
                 console.log(`.catch --->  Post user: `);
                 console.log(`err : ${JSON.stringify(error, null, 3)}`);
                 db.close();
-                callback(null, {statusCode: 200, body: JSON.stringify({"errorMessage" : error })});
+                callback(null, {statusCode: 404, body: JSON.stringify({"errorMessage" : error })});
             })
+        });
     });// mongo Client
-};
-
+}
 setRegex =  (queryValue)=>{
     let value = encodeURIComponent(queryValue)
         .replace("%2F","\\%2F")

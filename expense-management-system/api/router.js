@@ -32,7 +32,7 @@ let instance = {
 };
 
 
-module.exports.handler = async (event, context, callback) => {
+module.exports.handler =  (event, context, callback) => {
 
     if (!event.resource){
         // Check if resource is present in event if not end call

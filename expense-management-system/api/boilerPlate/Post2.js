@@ -4,17 +4,14 @@
 *
 * */
 
-//import env keys
-const keys = require("../../env")
-
-const db = require(keys().apiDB);
-const helper = require(keys().modelHeler);
+const db = require('../../mongoFiles/collection');
+const helper = require('../../model/helper');
 const Accounts = db.Accounts();
 const AuthCredentials = db.AuthCredentials();
 const dates = require('../../model/dates');
 const Password = require('../../model/password');
 const MongoClient = require('mongodb').MongoClient;
-const url = keys().mongoUrl;
+const url = "mongodb+srv://EMS-Admin:PUuABNm2m0ZUZhkA@cluster0.fqgbv.mongodb.net/EMS-DB?retryWrites=true&w=majority";
 
 module.exports.handler = (event, context, callback ) => {
 
@@ -128,8 +125,12 @@ module.exports.handler = (event, context, callback ) => {
                 console.log(`.catch --->  Post user: `);
                 console.log(`err : ${JSON.stringify(error, null, 3)}`);
                 db.close();
-                callback(null, {statusCode: 200, body: JSON.stringify({"errorMessage" : error })});
+                callback(null, {statusCode: 404, body: JSON.stringify({"errorMessage" : error })});
             })
+            // .then((creds)=>{
+            //     db.close();
+            //     callback(null, {statusCode: 200, body: JSON.stringify(body)});
+            // })
     });// mongo Client
 };
 

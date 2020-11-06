@@ -41,3 +41,5 @@ module.exports = {
         return Promise.resolve(encryptedPassword==credential.password);
     }
 };
+
+

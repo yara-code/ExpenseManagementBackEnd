@@ -7,7 +7,7 @@
     "auth"   : false
   },
   {
-    "path": "/user/{id}",
+    "path": "/user/{userid}",
     "method": "GET",
     "handler": "handler",
     "require": "api/user/Get.js",
@@ -21,14 +21,14 @@
     "auth"   : false
   },
   {
-    "path": "/user/{id}",
+    "path": "/user/{userid}",
     "method": "PUT",
     "handler": "handler",
     "require": "api/user/Put.js",
     "auth"   : false
   },
   {
-    "path": "/user/{id}",
+    "path": "/user/{userid}",
     "method": "DELETE",
     "handler": "handler",
     "require": "api/user/Delete.js",
