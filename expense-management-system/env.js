@@ -4,8 +4,11 @@ module.exports = function () {
 
     const instance = {
         apiDB: '../../mongoFiles/collection',
+        DB: '../mongoFiles/collection',
         mongoUrl: "mongodb+srv://EMS-Admin:PUuABNm2m0ZUZhkA@cluster0.fqgbv.mongodb.net/EMS-DB?retryWrites=true&w=majority",
-        modelHeler: "../../model/helper"
+        modelHeler: "../../model/helper",
+        mHeler: "../model/helper",
+
     };
     return instance
 };

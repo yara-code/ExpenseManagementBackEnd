@@ -26,7 +26,14 @@ functions:
           path: ping
           method: get
           cors: true
-
+      - http:
+          path: auth
+          method: post
+          cors: true
+      - http:
+          path: auth/{userid}
+          method: delete
+          cors: true
       - http:
           path: user/{userid}
           method: get

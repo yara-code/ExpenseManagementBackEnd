@@ -7,6 +7,20 @@
     "auth"   : false
   },
   {
+    "path": "/auth",
+    "method": "POST",
+    "handler": "handler",
+    "require": "api/auth/Post.js",
+    "auth"   : false
+  },
+  {
+    "path": "/auth/{userid}",
+    "method": "DELETE",
+    "handler": "handler",
+    "require": "api/auth/Delete.js",
+    "auth"   : true
+  },
+  {
     "path": "/user/{userid}",
     "method": "GET",
     "handler": "handler",

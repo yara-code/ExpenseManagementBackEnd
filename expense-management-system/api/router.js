@@ -48,21 +48,22 @@ module.exports.handler =  (event, context, callback) => {
                 event.body = helper().objectParse(event.body);
                 if(path[0].auth) {
                     // // send to authorizer first and add session to event : ---> event.session
-                    // const auth = require('../authorizer/authorizer').handler;
-                    // auth(event, context, (err, results) => {
-                    //     if(err) {
-                    //         callback(null, results)
-                    //     } else {
-                    //         // attach session to event:
-                    //         results.accountId = results.accountId.toString(); // typeof was returning object, changing to string
-                    //         event.session = results;
-                    //         // console.log(`event.session : ${JSON.stringify(event.session, null, 3)}`);
-                    //         const route = require(`../${path[0].require}`).handler;
-                    //         route(event, context, (err, results ) => {
-                    //             callback(null,{statusCode : results.statusCode, body: results.body});
-                    //         })
-                    //     }
-                    // })
+                    const auth = require('../authorizer/authorizer').handler;
+                    auth(event, context, (err, results) => {
+                        if(err) {
+                            callback(null, results)
+                        } else {
+                            // attach session to event:
+                            results.accountId = results.accountId.toString(); // typeof was returning object, changing to string
+                            event.session = results;
+                            // console.log(`event.session : ${JSON.stringify(event.session, null, 3)}`);
+                            const route = require(`../${path[0].require}`).handler;
+                            console.log(`routing to correct path----------> : `);
+                            route(event, context, (err, results ) => {
+                                callback(null,{statusCode : results.statusCode, body: results.body});
+                            })
+                        }
+                    })
                 } else {
                     const route = require(`../${path[0].require}`).handler;
                     route(event, context, (err, results ) => {

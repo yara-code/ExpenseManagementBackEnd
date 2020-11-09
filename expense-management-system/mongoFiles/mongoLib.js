@@ -7,37 +7,7 @@ const h = require('../model/helper')
 
 module.exports = function  (_collectionName) {
     const instance = {
-        // Create : TODO --> Done
-        // create:  (record, toClose) => {
-        //     return new Promise((resolve, reject) => {
-        //         client.connect((err, DB) => {
-        //             if (err) {
-        //                 return reject({'Error': 'Cannot connect to DB'})
-        //             }
-        //             console.log(`connect to db and collection : ${_collectionName}`);
-        //             const db = client.db("EMS-DB").collection(_collectionName);
-        //             // Calls the correct collection and returns all records in an array of object:
-        //             db.insertOne(record, function (err, record) {
-        //                 if (err) {
-        //                     client.close();
-        //                     return reject({'Error': `Could not create record.`, 'errorMessage': err})
-        //                 }
-        //
-        //                 // h().close(client)
-        //                 //     .then(()=>{
-        //                 //         return resolve(record);
-        //                 //     })
-        //                 DB.close()
-        //                     .then(()=>{
-        //                         return resolve(record);
-        //                     })
-        //                 // if (toClose) {client.close();}
-        //                 return resolve(record);
-        //             });
-        //
-        //         })
-        //     });
-        // },
+
         create:  (DB, record) => {
             return new Promise((resolve, reject) => {
                 console.log(`connect to db and collection : ${_collectionName}`);
@@ -52,47 +22,6 @@ module.exports = function  (_collectionName) {
             });
         },
 
-
-        // Get data: TODO --> Done
-        // find: (query, attributes, size, toClose) => {
-        //     return new Promise((resolve, reject) => {
-        //         query = query ?  query : {};
-        //         attributes = attributes ? attributes : {};
-        //         size = size ? size : undefined;
-        //
-        //         console.log(`connect to find :`);
-        //         client.connect((err, DB) => {
-        //             console.log(`connected check iferr :`);
-        //             if(err){
-        //                 return reject({'Error': 'Cannot connect to DB'})
-        //             }
-        //             const db = client.db("EMS-DB").collection(_collectionName);
-        //             // Calls the correct collection and returns all records in an array of object:
-        //             console.log(`db.find :`);
-        //             db.find(query, attributes, size).toArray(function (err, accounts) {
-        //                 if (err) {
-        //                     client.close();
-        //                     return reject({'Error': 'error- cant find'});
-        //                 } else {
-        //                     // client.close();
-        //                     // if (toClose){client.close();}
-        //                     DB.close()
-        //                         .then(()=>{
-        //                             return resolve(accounts);
-        //                         })
-        //                     // h().close(client)
-        //                     //     .then(()=>{
-        //                     //         console.log(`accounts : ${accounts}`);
-        //                     //         return resolve(accounts);
-        //                     //     })
-        //                     // console.log(`accounts : ${accounts}`);
-        //                     // return resolve(accounts);
-        //                 }
-        //             })
-        //         });
-        //     })
-        //
-        // },
         find: (DB, query, attributes, size) => {
             return new Promise((resolve, reject) => {
                 query = query ?  query : {};
@@ -116,8 +45,6 @@ module.exports = function  (_collectionName) {
 
         },
 
-
-
         //TODO - Done
         //calls the find function and only returns the first one:
         findOne: (DB, query, attributes) => {
@@ -130,7 +57,7 @@ module.exports = function  (_collectionName) {
                 });
         },
 
-        // TODO: - Done
+        // TODO: - need to do ---> Not sure We need this
         load: (id) => {
             return new Promise((resolve, reject) => {
                 client.connect(err => {
@@ -152,48 +79,34 @@ module.exports = function  (_collectionName) {
         },
 
         // Update: TODO --> Done
-        update: (id, update) => {
+        update: (DB, id, update) => {
             return new Promise((resolve, reject) => {
-                client.connect(err => {
+                const db = DB.collection(_collectionName);
+                id = {_id : helper().objectId(id)};
+
+                console.log(`updating : --------------->>>>>>>>>`);
+                db.updateOne(id, update, function (err, record) {
                     if (err) {
-                        return reject({'Error': 'Cannot connect to DB'})
+                        return reject({'Error': `Could not create record.`, 'errorMessage': err})
                     }
-                    const db = client.db("EMS-DB");
-                    id = {_id : helper().objectId(id)};
-
-                    db.collection(_collectionName).updateOne(id, update, function (err, record) {
-                        if (err) {
-                            client.close();
-                            return reject({'Error': `Could not create record.`, 'errorMessage': err})
-                        }
-                        client.close();
-                        return resolve(record);
-                    });
-
+                    return resolve(record);
                 });
             });
         },
 
-        // Delete data
-        delete: (id) => {
+        // Delete data TODO: Done
+        delete: (DB, id) => {
             return new Promise((resolve, reject) => {
-                client.connect(err => {
-                    if(err){
-                        return reject({'Error': 'Cannot connect to DB'})
+                const db = DB.collection(_collectionName);
+                id = helper().objectId(id);
+                // Calls the correct collection and returns all records in an array of object:
+                db.remove({_id: id}, function (err, accounts) {
+                    if (err) {
+                        return reject({'Error': 'error- cant find'});
+                    } else {
+                        return resolve(accounts);
                     }
-                    const db = client.db("EMS-DB");
-                    id = helper().objectId(id);
-                    // Calls the correct collection and returns all records in an array of object:
-                    db.collection(_collectionName).remove({_id: id}, function (err, accounts) {
-                        if (err) {
-                            client.close();
-                            return reject({'Error': 'error- cant find'});
-                        } else {
-                            client.close();
-                            return resolve(accounts);
-                        }
-                    })
-                });
+                })
             })
         },
     };

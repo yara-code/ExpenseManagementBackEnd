@@ -19,6 +19,14 @@ const url = keys().mongoUrl;
 module.exports.handler = (event, context, callback ) => {
 
     const body = event.body;
+
+    // TODO: ----> Val on body, kick if something is missing:
+
+
+    //TODO: ----> Add date create-on
+
+
+
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
         let dbo = db.db("EMS-DB");

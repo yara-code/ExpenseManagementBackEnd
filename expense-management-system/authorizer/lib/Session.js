@@ -33,6 +33,7 @@ const instance = {
         let key = "MOxEW3%!Oop+tXhIh(9f>Za3]{s98Cv#"; // key should be 32 bytes
         let iv = '0000000000000000'; // iv should be 16
 
+        console.log(`sessionID : ${sessionId}`);
         let randomKey = instance.makeid(8);
         return Promise.resolve(randomKey)
             .then((nums ) => {
@@ -43,7 +44,7 @@ const instance = {
                     id: encodedId1,
                     iv: iv
                 };
-
+                console.log(`.then results from encodeSession : ${JSON.stringify(result, null, 3)}`);
                 return Promise.resolve(result);
             })
     },

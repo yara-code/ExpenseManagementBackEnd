@@ -1,6 +1,6 @@
 /*
 *
-*   Creating a new account:
+*
 *
 * */
 

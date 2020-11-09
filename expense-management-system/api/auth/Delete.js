@@ -1,13 +1,53 @@
-'use strict';
+/*
+*
+*   
+*
+* */
+
+const db = require('../../mongoFiles/collection');
+const AuthSession = db.AuthSessions();
+
+const MongoClient = require('mongodb').MongoClient;
+const url = "mongodb+srv://EMS-Admin:PUuABNm2m0ZUZhkA@cluster0.fqgbv.mongodb.net/EMS-DB?retryWrites=true&w=majority";
 
 module.exports.handler = (event, context, callback ) => {
-    console.log(`event.pathParameters : ${JSON.stringify(event.pathParameters, null, 3)}`);
 
-    let response = {
-        statusCode: 200,
-        body: JSON.stringify({
-            message: "Delete Auth"
+    Promise.resolve()
+        .then(()=>{
+            if(!event.pathParameters.userid) {
+                console.log(`test-------------->`);
+                return Promise.reject("Missing id in url.");
+            }
+            return Promise.resolve();
         })
-    };
-    callback(null, response)
-};
+        .then(()=>{
+            MongoClient.connect(url, function(err, db) {
+                if (err) throw err;
+
+                //Set open connection to mongodb:
+                let dbo = db.db("EMS-DB");
+
+                return Promise.resolve()
+                    .then(()=>{
+                        if (event.session.accountId !== event.pathParameters.userid){
+                            console.log(`event.session : ${JSON.stringify(event.session, null, 3)}`);
+                            console.log(`id : ${event.pathParameters.id}`);
+                            console.log(`id does not match:`);
+                            return Promise.reject("Id does not match session id.")
+                        } else {
+                            return Promise.resolve(AuthSession.delete(dbo, event.session.id))
+                                .then((results ) => {
+                                    // console.log(`results  : ${JSON.stringify(results, null, 3)}`);
+                                    db.close();
+                                    callback(null, {statusCode: 200, body: JSON.stringify({"message" : "Successfully deleted session."})});
+                                })
+                        }
+                    })
+                    .catch((error ) => {
+                        db.close();
+                        callback(null, {statusCode: 400, body: JSON.stringify({"errorMessage": error})})
+                    })
+
+            });// mongo Client
+        })
+}
