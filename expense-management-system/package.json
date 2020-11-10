@@ -1,0 +1,8 @@
+{
+  "name": "EMS_APIs",
+  "version": "1.0.1",
+  "dependencies": {
+    "mongodb": "^3.6.2",
+    "crypto": "^1.0.1"
+  }
+}

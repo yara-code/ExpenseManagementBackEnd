@@ -13,6 +13,11 @@ provider:
 
 functions:
   api:
+    Cors:
+      AllowMethods: '*'
+      AllowHeaders: '*'
+      AllowOrigin: '*'
+
     package:
       include:
         - "endpoints.json"
@@ -25,48 +30,101 @@ functions:
       - http:
           path: ping
           method: get
-          cors: true
+          response:
+            "Access-Control-Allow-Origin": "*"
+          cors:
+            origins: "*"
+            headers: '*'
       - http:
           path: auth
           method: post
-          cors: true
+          response:
+              "Access-Control-Allow-Origin": "*"
+          cors:
+            origins: "*"
+            headers: '*'
       - http:
           path: auth/{userid}
           method: delete
-          cors: true
+          response:
+            "Access-Control-Allow-Origin": "*"
+          cors:
+            origins: "*"
+            headers: '*'
       - http:
           path: user/{userid}
           method: get
-          cors: true
+          response:
+            "Access-Control-Allow-Origin": "*"
+          cors:
+            origins: "*"
+            headers: '*'
       - http:
           path: user
           method: post
-          cors: true
+          response:
+            "Access-Control-Allow-Origin": "*"
+          cors:
+            origins: "*"
+            headers: '*'
+
+      - http:
+          path: user
+          method: put
+          response:
+            "Access-Control-Allow-Origin": "*"
+          cors:
+            origins: "*"
+            headers: '*'
       - http:
           path: user/{userid}
           method: put
-          cors: true
+          response:
+            "Access-Control-Allow-Origin": "*"
+          cors:
+            origins: "*"
+            headers: '*'
       - http:
           path: user/{userid}
           method: delete
-          cors: true
+          response:
+            "Access-Control-Allow-Origin": "*"
+          cors:
+            origins: "*"
+            headers: '*'
 
       - http:
           path: expense/{userid}/{id}
           method: get
-          cors: true
+          response:
+            "Access-Control-Allow-Origin": "*"
+          cors:
+            origins: "*"
+            headers: '*'
       - http:
           path: expense
           method: post
-          cors: true
+          response:
+            "Access-Control-Allow-Origin": "*"
+          cors:
+            origins: "*"
+            headers: '*'
       - http:
           path: expense/{userid}/{id}
           method: put
-          cors: true
+          response:
+            "Access-Control-Allow-Origin": "*"
+          cors:
+            origins: "*"
+            headers: '*'
       - http:
           path: expense/{userid}/{id}
           method: delete
-          cors: true
+          response:
+            "Access-Control-Allow-Origin": "*"
+          cors:
+            origins: "*"
+            headers: '*'
 
 plugins:
   - serverless-offline

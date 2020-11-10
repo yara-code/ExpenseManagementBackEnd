@@ -106,8 +106,7 @@ module.exports.handler = (event, context, callback ) => {
                 event.creds = creds;
 
                 let userAccount = {
-                    firstName: body.firstName,
-                    lastName: body.lastName,
+                    name: body.name,
                     username: body.username,
                     email: body.email,
                     authCredential: creds._id
@@ -123,11 +122,13 @@ module.exports.handler = (event, context, callback ) => {
                     })
             })
             .then((results ) => {
-                console.log(`return response to api : `);
                 body.accountId = results._id; // add accountID to auth creds update db
-                AuthCredentials.update(event.creds._id, {$set : {accountId: body.accountId} });
+                AuthCredentials.update(dbo, event.creds._id, {$set : {accountId: body.accountId} });
+
                 // return account info or do that in the front end to log user inn
                 body.responseMessage =  "Account Created Successfully";
+                body.password = "**********"
+                body.confirmPassword = "**********"
                 console.log(`body : ${JSON.stringify(body, null, 3)}`);
                 db.close();
                 callback(null, {statusCode: 200, body: JSON.stringify(body)});
@@ -136,7 +137,7 @@ module.exports.handler = (event, context, callback ) => {
                 console.log(`.catch --->  Post user: `);
                 console.log(`err : ${JSON.stringify(error, null, 3)}`);
                 db.close();
-                callback(null, {statusCode: 200, body: JSON.stringify({"errorMessage" : error })});
+                callback(null, {statusCode: 400, body: JSON.stringify({"errorMessage" : error })});
             })
     });// mongo Client
 };

@@ -2,8 +2,7 @@
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://EMS-Admin:PUuABNm2m0ZUZhkA@cluster0.fqgbv.mongodb.net/EMS-DB?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-const helper = require('./helper');
-const h = require('../model/helper')
+const helper = require('../model/helper');
 
 module.exports = function  (_collectionName) {
     const instance = {
@@ -13,10 +12,13 @@ module.exports = function  (_collectionName) {
                 console.log(`connect to db and collection : ${_collectionName}`);
                 const db = DB.collection(_collectionName);
                 // Calls the correct collection and returns all records in an array of object:
+                console.log(`insert record for  : ${_collectionName}`);
                 db.insertOne(record, function (err, record) {
                     if (err) {
+                        console.log(`err inside of create : ${JSON.stringify(err, null, 3)}`);
                         return reject({'Error': `Could not create record.`, 'errorMessage': err})
                     }
+                    console.log(`returning record : ${record}`);
                     return resolve(record);
                 });
             });

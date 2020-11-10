@@ -39,8 +39,8 @@ module.exports.handler =  (event, context, callback) => {
         callback(null, {statusCode: 500, body: {"errorMessage": "Internal Server Error."}})
     } else {
         instance.resource(event.resource, (err, path) => {
-            console.log(`err : ${JSON.stringify(err, null, 3)}`);
-            console.log(`path : ${JSON.stringify(path, null, 3)}`);
+            // console.log(`err : ${JSON.stringify(err, null, 3)}`);
+            // console.log(`path : ${JSON.stringify(path, null, 3)}`);
             if(err){
                 callback(null, path)
             } else {
@@ -56,18 +56,31 @@ module.exports.handler =  (event, context, callback) => {
                             // attach session to event:
                             results.accountId = results.accountId.toString(); // typeof was returning object, changing to string
                             event.session = results;
-                            // console.log(`event.session : ${JSON.stringify(event.session, null, 3)}`);
                             const route = require(`../${path[0].require}`).handler;
-                            console.log(`routing to correct path----------> : `);
                             route(event, context, (err, results ) => {
-                                callback(null,{statusCode : results.statusCode, body: results.body});
+                                callback(null,{
+                                    statusCode : results.statusCode,
+                                    headers: {
+                                        'Access-Control-Allow-Origin': '*',
+                                        "Access-Control-Allow-Credentials" : false
+                                    },
+                                    withCredentials: false,
+                                    body: results.body,
+                                });
                             })
                         }
                     })
                 } else {
                     const route = require(`../${path[0].require}`).handler;
                     route(event, context, (err, results ) => {
-                        callback(null,{statusCode : results.statusCode, body: results.body});
+                        callback(null,{
+                            statusCode : results.statusCode,
+                            headers: {
+                                'Access-Control-Allow-Origin': '*',
+                                "Access-Control-Allow-Credentials" : false
+                            },
+                            body: results.body,
+                        });
                     })
                 }
 
