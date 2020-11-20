@@ -11,11 +11,11 @@ const Sessions = db.AuthSessions();
 
 module.exports.handler = (event, context, callback) => {
   var currentSession;
-  if(!event.headers.authorizationToken || !event.headers.authorizationToken.trim()) {
-    callback(true, {statusCode: 400, body: JSON.stringify({'errorMessage' : 'Unauthorized'})})
+  if(!event.headers.authorizationtoken) {
+    callback(true, {statusCode: 400, body: JSON.stringify({'errorMessage' : 'Unauthorized - no auth token'})})
   }  else {
       
-    let sessionPromise = Promise.resolve(sessionLib.decodeSession( event.headers.authorizationToken ));
+    let sessionPromise = Promise.resolve(sessionLib.decodeSession( event.headers.authorizationtoken ));
     sessionPromise
         .then((session )=>{
             MongoClient.connect(url, function(err, db) {
@@ -34,13 +34,13 @@ module.exports.handler = (event, context, callback) => {
                     })
                     .then( (session ) => {
                         if(session.length == 0){
-                            callback(true, {statusCode: 400, body: JSON.stringify({"errorMessage": "Unauthorized"})});
+                            callback(true, {statusCode: 400, body: JSON.stringify({"errorMessage": "Unauthorized - no session"})});
                         } else {
 
                             // TODO: need to check if session is still alive
                             // This will be a back up just incase document is not removed in time but expires
                             if (dates.expiredCheck(session.expires)){
-                                callback(true, {statusCode: 400, body: JSON.stringify({"errorMessage": "Unauthorized"})});
+                                callback(true, {statusCode: 400, body: JSON.stringify({"errorMessage": "Unauthorized - expiried session"})});
                             } else {
                                 // TODO: need to extend expiration time:
 
@@ -66,8 +66,8 @@ module.exports.handler = (event, context, callback) => {
                                     "id"        : session._id
                                 };
 
-                                console.log(`Returning Session : ---------->`);
-                                console.log(`results : ${JSON.stringify(result, null, 3)}`);
+                                // console.log(`Returning Session : ---------->`);
+                                // console.log(`results : ${JSON.stringify(result, null, 3)}`);
                                 callback(null, result)
                             }
                         }

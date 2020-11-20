@@ -13,11 +13,10 @@ provider:
 
 functions:
   api:
-    Cors:
-      AllowMethods: '*'
-      AllowHeaders: '*'
-      AllowOrigin: '*'
-
+#    Cors:
+#      AllowMethods: '*'
+#      AllowHeaders: '*'
+#      AllowOrigin: '*'
     package:
       include:
         - "endpoints.json"
@@ -30,101 +29,116 @@ functions:
       - http:
           path: ping
           method: get
-          response:
-            "Access-Control-Allow-Origin": "*"
+#          response:
+#            "Access-Control-Allow-Origin": "*"
           cors:
-            origins: "*"
-            headers: '*'
+            origin: "*"
+            header: '*'
       - http:
           path: auth
           method: post
-          response:
-              "Access-Control-Allow-Origin": "*"
+#          response:
+#              "Access-Control-Allow-Origin": "*"
           cors:
-            origins: "*"
-            headers: '*'
+            origins: ["*"]
+            headers: ['*']
       - http:
           path: auth/{userid}
           method: delete
-          response:
-            "Access-Control-Allow-Origin": "*"
+#          response:
+#            "Access-Control-Allow-Origin": "*"
           cors:
-            origins: "*"
-            headers: '*'
+            origin: "*"
+            header: '*'
       - http:
           path: user/{userid}
           method: get
-          response:
-            "Access-Control-Allow-Origin": "*"
           cors:
-            origins: "*"
-            headers: '*'
+            origin: "*"
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - Access-Control-Allow-Origin
+              - authorizationToken
+
       - http:
           path: user
           method: post
-          response:
-            "Access-Control-Allow-Origin": "*"
+#          response:
+#            "Access-Control-Allow-Origin": "*"
           cors:
-            origins: "*"
-            headers: '*'
+            origin: "*"
+            header: '*'
 
       - http:
           path: user
           method: put
-          response:
-            "Access-Control-Allow-Origin": "*"
+#          response:
+#            "Access-Control-Allow-Origin": "*"
           cors:
-            origins: "*"
-            headers: '*'
+            origin: "*"
+            header: '*'
       - http:
           path: user/{userid}
           method: put
-          response:
-            "Access-Control-Allow-Origin": "*"
+#          response:
+#            "Access-Control-Allow-Origin": "*"
           cors:
-            origins: "*"
-            headers: '*'
+            origin: "*"
+            header: '*'
       - http:
           path: user/{userid}
           method: delete
-          response:
-            "Access-Control-Allow-Origin": "*"
+#          response:
+#            "Access-Control-Allow-Origin": "*"
           cors:
-            origins: "*"
-            headers: '*'
+            origin: "*"
+            header: '*'
 
       - http:
           path: expense/{userid}/{id}
           method: get
-          response:
-            "Access-Control-Allow-Origin": "*"
+#          response:
+#            "Access-Control-Allow-Origin": "*"
           cors:
-            origins: "*"
-            headers: '*'
+            origin: "*"
+            header: '*'
       - http:
           path: expense
           method: post
-          response:
-            "Access-Control-Allow-Origin": "*"
+#          response:
+#            "Access-Control-Allow-Origin": "*"
           cors:
-            origins: "*"
-            headers: '*'
+            origin: "*"
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - Access-Control-Allow-Origin
+              - authorizationToken
       - http:
           path: expense/{userid}/{id}
           method: put
-          response:
-            "Access-Control-Allow-Origin": "*"
+#          response:
+#            "Access-Control-Allow-Origin": "*"
           cors:
-            origins: "*"
-            headers: '*'
+            origin: "*"
+            header: '*'
       - http:
           path: expense/{userid}/{id}
           method: delete
-          response:
-            "Access-Control-Allow-Origin": "*"
+#          response:
+#            "Access-Control-Allow-Origin": "*"
           cors:
-            origins: "*"
-            headers: '*'
+            origin: "*"
+            header: '*'
 
 plugins:
   - serverless-offline

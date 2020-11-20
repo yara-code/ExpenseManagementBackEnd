@@ -115,6 +115,18 @@ module.exports.handler = (event, context, callback ) => {
                                         return Promise.reject('Internal Server Error; session.');
                                     })
                             })
+
+                            .then((results)=>{
+
+                                let userId = helper().objectId(results.accountId)
+
+                                return Promise.resolve(Accounts.findOne(dbo, {_id: userId}))
+                                    .then((user)=>{
+                                        results.user = user;
+
+                                        return Promise.resolve(results)
+                                    })
+                            })
                             .then((results ) => {
                                 console.log(`no errors returning to router.js : `);
                                 console.log(`results : ${results}`);

@@ -33,6 +33,7 @@ let instance = {
 
 
 module.exports.handler =  (event, context, callback) => {
+    context.callbackWaitsForEmptyEventLoop = false
 
     if (!event.resource){
         // Check if resource is present in event if not end call
@@ -51,22 +52,31 @@ module.exports.handler =  (event, context, callback) => {
                     const auth = require('../authorizer/authorizer').handler;
                     auth(event, context, (err, results) => {
                         if(err) {
-                            callback(null, results)
+                            let response = {
+                                statusCode : results.statusCode,
+                                headers: {
+                                    "Access-Control-Allow-Origin" : "*",
+                                    "Access-Control-Allow-Credentials" : false,
+                                },
+                                body: results.body,
+                            }
+                            callback(null, response);
                         } else {
                             // attach session to event:
                             results.accountId = results.accountId.toString(); // typeof was returning object, changing to string
                             event.session = results;
                             const route = require(`../${path[0].require}`).handler;
                             route(event, context, (err, results ) => {
-                                callback(null,{
+
+                                let response = {
                                     statusCode : results.statusCode,
                                     headers: {
-                                        'Access-Control-Allow-Origin': '*',
-                                        "Access-Control-Allow-Credentials" : false
+                                        "Access-Control-Allow-Origin" : "*",
+                                        "Access-Control-Allow-Credentials" : false,
                                     },
-                                    withCredentials: false,
                                     body: results.body,
-                                });
+                                }
+                                callback(null, response);
                             })
                         }
                     })
@@ -76,9 +86,11 @@ module.exports.handler =  (event, context, callback) => {
                         callback(null,{
                             statusCode : results.statusCode,
                             headers: {
-                                'Access-Control-Allow-Origin': '*',
-                                "Access-Control-Allow-Credentials" : false
+                                "Access-Control-Allow-Origin" : "*",
+                                "Access-Control-Allow-Credentials" : false,
                             },
+                            // crossDomain: true,
+                            // withCredentials: false,
                             body: results.body,
                         });
                     })
