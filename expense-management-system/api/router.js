@@ -31,7 +31,6 @@ let instance = {
 
 };
 
-
 module.exports.handler =  (event, context, callback) => {
     context.callbackWaitsForEmptyEventLoop = false
 

@@ -123,6 +123,21 @@ functions:
               - X-Amz-User-Agent
               - Access-Control-Allow-Origin
               - authorizationToken
+
+      - http:
+          path: income
+          method: post
+          cors:
+            origin: "*"
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - Access-Control-Allow-Origin
+              - authorizationToken
       - http:
           path: expense/{userid}/{id}
           method: put

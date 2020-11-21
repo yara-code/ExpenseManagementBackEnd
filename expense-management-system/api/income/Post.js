@@ -23,22 +23,10 @@ module.exports.handler = (event, context, callback ) => {
         return Promise.resolve()
             .then(()=>{
                 // validation:
-
-                if(!body.category){
-                    Promise.reject("Missing category.")
-                }
-                if(!body.title){
-                    Promise.reject("Missing title.")
-                }
-                if(!body.date){
-                    // check if date is entered correctly:
-                    Promise.reject("Missing date.")
-                }
                 if(!body.amount){
-                    Promise.reject("Missing amount.")
-                } else {
-                    body.amount = Number(body.amount).toFixed(2)
+                    Promise.reject("Miss amount.")
                 }
+
 
             })
             .then(()=>{
@@ -51,7 +39,7 @@ module.exports.handler = (event, context, callback ) => {
 
                 console.log(`account : ${JSON.stringify(account, null, 3)}`);
 
-                return Promise.resolve(Accounts.update(dbo, userId, {$push: {expenses:body}}))
+                return Promise.resolve(Accounts.update(dbo, userId, {$set: {income:body.amount}}))
                     .then((results ) => {
                         // TODO: NO errors, close db connection then callback to return data
                         body.message = "Account updated."

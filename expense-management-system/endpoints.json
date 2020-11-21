@@ -63,6 +63,13 @@
     "auth"   : true
   },
   {
+    "path": "/income",
+    "method": "POST",
+    "handler": "handler",
+    "require": "api/income/Post.js",
+    "auth"   : true
+  },
+  {
     "path": "/expense/{id}",
     "method": "PUT",
     "handler": "handler",

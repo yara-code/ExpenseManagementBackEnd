@@ -9,16 +9,16 @@ module.exports = function  (_collectionName) {
 
         create:  (DB, record) => {
             return new Promise((resolve, reject) => {
-                console.log(`connect to db and collection : ${_collectionName}`);
+                // console.log(`connect to db and collection : ${_collectionName}`);
                 const db = DB.collection(_collectionName);
                 // Calls the correct collection and returns all records in an array of object:
-                console.log(`insert record for  : ${_collectionName}`);
+                // console.log(`insert record for  : ${_collectionName}`);
                 db.insertOne(record, function (err, record) {
                     if (err) {
                         console.log(`err inside of create : ${JSON.stringify(err, null, 3)}`);
                         return reject({'Error': `Could not create record.`, 'errorMessage': err})
                     }
-                    console.log(`returning record : ${record}`);
+                    // console.log(`returning record : ${record}`);
                     return resolve(record);
                 });
             });
@@ -30,16 +30,16 @@ module.exports = function  (_collectionName) {
                 attributes = attributes ? attributes : {};
                 size = size ? size : undefined;
 
-                console.log(`connect to find :`);
-                console.log(`connected check db can connect :`);
+                // console.log(`connect to find :`);
+                // console.log(`connected check db can connect :`);
                 const db = DB.collection(_collectionName);
                 // Calls the correct collection and returns all records in an array of object:
-                console.log(`db.find :`);
+                // console.log(`db.find :`);
                 db.find(query, attributes, size).toArray(function (err, accounts) {
                     if (err) {
                         return reject({'Error': 'error- cant find'});
                     } else {
-                        console.log(`accounts : ${accounts}`);
+                        // console.log(`accounts : ${accounts}`);
                         return resolve(accounts);
                     }
                 })

@@ -92,10 +92,10 @@ module.exports.handler = (event, context, callback ) => {
                                             "accountId" : event.accountCredentials.accountId,
                                             "hits" : 1,
                                         };
-                                        console.log(`Creating an AuthSessionn ------>------------>----->`);
+                                        // console.log(`Creating an AuthSessionn ------>------------>----->`);
                                         return Promise.resolve(AuthSession.create(dbo, addSession))
                                             .then(() => {
-                                                console.log(`session created successfully : <-------------`);
+                                                // console.log(`session created successfully : <-------------`);
                                                 let response = {
                                                     username  : addSession.username,
                                                     accountId : addSession.accountId,
@@ -111,7 +111,7 @@ module.exports.handler = (event, context, callback ) => {
                                             })
                                     })
                                     .catch((error ) => {
-                                        console.log(`error from encodeSession : ${JSON.stringify(error, null, 3)}`);
+                                        // console.log(`error from encodeSession : ${JSON.stringify(error, null, 3)}`);
                                         return Promise.reject('Internal Server Error; session.');
                                     })
                             })
@@ -128,9 +128,9 @@ module.exports.handler = (event, context, callback ) => {
                                     })
                             })
                             .then((results ) => {
-                                console.log(`no errors returning to router.js : `);
-                                console.log(`results : ${results}`);
-                                console.log(`results that is return to router.js : ${JSON.stringify(results, null, 3)}`);
+                                // console.log(`no errors returning to router.js : `);
+                                // console.log(`results : ${results}`);
+                                // console.log(`results that is return to router.js : ${JSON.stringify(results, null, 3)}`);
                                 db.close();
                                 callback(null, {statusCode: 200, body: JSON.stringify(results)});
                             })
