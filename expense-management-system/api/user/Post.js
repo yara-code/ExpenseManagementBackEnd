@@ -109,7 +109,9 @@ module.exports.handler = (event, context, callback ) => {
                     name: body.name,
                     username: body.username,
                     email: body.email,
-                    authCredential: creds._id
+                    authCredential: creds._id,
+                    expenses: [],
+                    income: "0"
                 };
                 console.log("Accounts.create");
                 return Promise.resolve(Accounts.create(dbo, userAccount))
