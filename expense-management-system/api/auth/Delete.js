@@ -15,7 +15,6 @@ module.exports.handler = (event, context, callback ) => {
     Promise.resolve()
         .then(()=>{
             if(!event.pathParameters.userid) {
-                console.log(`test-------------->`);
                 return Promise.reject("Missing id in url.");
             }
             return Promise.resolve();
@@ -30,14 +29,10 @@ module.exports.handler = (event, context, callback ) => {
                 return Promise.resolve()
                     .then(()=>{
                         if (event.session.accountId !== event.pathParameters.userid){
-                            console.log(`event.session : ${JSON.stringify(event.session, null, 3)}`);
-                            console.log(`id : ${event.pathParameters.id}`);
-                            console.log(`id does not match:`);
                             return Promise.reject("Id does not match session id.")
                         } else {
                             return Promise.resolve(AuthSession.delete(dbo, event.session.id))
                                 .then((results ) => {
-                                    // console.log(`results  : ${JSON.stringify(results, null, 3)}`);
                                     db.close();
                                     callback(null, {statusCode: 200, body: JSON.stringify({"message" : "Successfully deleted session."})});
                                 })

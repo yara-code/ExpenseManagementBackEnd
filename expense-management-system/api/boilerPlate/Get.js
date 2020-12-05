@@ -39,14 +39,11 @@ module.exports.handler = (event, context, callback ) => {
                         body.accountId = results._id; // add accountID to auth creds update db
                         AuthCredentials.update(event.creds._id, {$set : {accountId: body.accountId} });
                         body.responseMessage =  "Account Created Successfully";
-                        console.log(`body : ${JSON.stringify(body, null, 3)}`);
                         db.close();
                         callback(null, {statusCode: 200, body: JSON.stringify(body)});
                     })
                     .catch ((error ) => {
                         // TODO: ERRORS Clsoe db and callback response
-                        console.log(`.catch --->  Post user: `);
-                        console.log(`err : ${JSON.stringify(error, null, 3)}`);
                         db.close();
                         callback(null, {statusCode: 404, body: JSON.stringify({"errorMessage" : error })});
                     })

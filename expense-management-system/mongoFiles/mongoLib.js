@@ -29,17 +29,12 @@ module.exports = function  (_collectionName) {
                 query = query ?  query : {};
                 attributes = attributes ? attributes : {};
                 size = size ? size : undefined;
-
-                // console.log(`connect to find :`);
-                // console.log(`connected check db can connect :`);
                 const db = DB.collection(_collectionName);
                 // Calls the correct collection and returns all records in an array of object:
-                // console.log(`db.find :`);
                 db.find(query, attributes, size).toArray(function (err, accounts) {
                     if (err) {
                         return reject({'Error': 'error- cant find'});
                     } else {
-                        // console.log(`accounts : ${accounts}`);
                         return resolve(accounts);
                     }
                 })
@@ -85,11 +80,23 @@ module.exports = function  (_collectionName) {
             return new Promise((resolve, reject) => {
                 const db = DB.collection(_collectionName);
                 id = {_id : helper().objectId(id)};
-
-                console.log(`updating : --------------->>>>>>>>>`);
+                console.log(`id for update : ${id}`);
                 db.updateOne(id, update, function (err, record) {
                     if (err) {
-                        return reject({'Error': `Could not create record.`, 'errorMessage': err})
+                        return reject({'Error': `Could not update record.`, 'errorMessage': err})
+                    }
+                    return resolve(record);
+                });
+            });
+        },
+        updateOne: (DB, id, update) => {
+            return new Promise((resolve, reject) => {
+                const db = DB.collection(_collectionName);
+                id = {_id : helper().objectId(id)};
+                console.log(`id for update : ${id}`);
+                db.updateOne(id, update, function (err, record) {
+                    if (err) {
+                        return reject({'Error': `Could not update record.`, 'errorMessage': err})
                     }
                     return resolve(record);
                 });

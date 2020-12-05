@@ -92,10 +92,8 @@ module.exports.handler = (event, context, callback ) => {
                                             "accountId" : event.accountCredentials.accountId,
                                             "hits" : 1,
                                         };
-                                        // console.log(`Creating an AuthSessionn ------>------------>----->`);
                                         return Promise.resolve(AuthSession.create(dbo, addSession))
                                             .then(() => {
-                                                // console.log(`session created successfully : <-------------`);
                                                 let response = {
                                                     username  : addSession.username,
                                                     accountId : addSession.accountId,
@@ -106,7 +104,6 @@ module.exports.handler = (event, context, callback ) => {
                                                 return Promise.resolve(response);
                                             })
                                             .catch(( ) => {
-                                                console.log(` AuthSession not created------->`);
                                                 return Promise.reject("AuthSession not created");
                                             })
                                     })

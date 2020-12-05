@@ -27,7 +27,7 @@ module.exports.handler = (event, context, callback ) => {
 
             return Promise.resolve(Accounts.findOne(dbo, {_id: userId}))
                 .then((account)=>{
-                    console.log(`account : ${JSON.stringify(account, null, 3)}`);
+                    console.log(`account GET.js: ${JSON.stringify(account, null, 3)}`);
                     db.close()
                     callback(null, {Status: 200, body: JSON.stringify(account) })
                 })

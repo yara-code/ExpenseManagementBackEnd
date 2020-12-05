@@ -11,18 +11,19 @@ const helper = require('../model/helper');
 
 let instance = {
 
-    resource: (resource, callback) => {
+    resource: (resource, method, callback) => {
 
         // get json file with endpoint routing info:
         let endpoints = Endpoints;
-
+        
         let path = [];
         endpoints.forEach((endpoint) => { // go through each endpoint until one is found
-            if(endpoint.path == resource){
+            if(endpoint.path == resource && endpoint.method == method){
                 path.push(endpoint);
             }
         });
         if (path.length !== 0){
+            // console.log(`path ------->4422 : ${JSON.stringify(path, null, 3)}`);
             callback(false, path)
         } else {
             callback(true, {statusCode: 404, body: JSON.stringify({"errorMessage" : "Path does not exist."})})
@@ -33,12 +34,11 @@ let instance = {
 
 module.exports.handler =  (event, context, callback) => {
     context.callbackWaitsForEmptyEventLoop = false
-
     if (!event.resource){
         // Check if resource is present in event if not end call
         callback(null, {statusCode: 500, body: {"errorMessage": "Internal Server Error."}})
     } else {
-        instance.resource(event.resource, (err, path) => {
+        instance.resource(event.resource, event.httpMethod, (err, path) => {
             // console.log(`err : ${JSON.stringify(err, null, 3)}`);
             // console.log(`path : ${JSON.stringify(path, null, 3)}`);
             if(err){

@@ -11,7 +11,6 @@ const Sessions = db.AuthSessions();
 
 module.exports.handler = (event, context, callback) => {
   var currentSession;
-  console.log(`event.header : ${JSON.stringify(event.headers, null, 3)}`);
   if(!event.headers.authorizationtoken) {
     callback(true, {statusCode: 400, body: JSON.stringify({'errorMessage' : 'Unauthorized - no auth token'})})
   }  else {

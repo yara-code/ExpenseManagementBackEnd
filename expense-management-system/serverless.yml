@@ -29,27 +29,37 @@ functions:
       - http:
           path: ping
           method: get
-#          response:
-#            "Access-Control-Allow-Origin": "*"
           cors:
             origin: "*"
-            header: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - Access-Control-Allow-Origin
+              - authorizationToken
       - http:
           path: auth
           method: post
-#          response:
-#              "Access-Control-Allow-Origin": "*"
           cors:
             origins: ["*"]
             headers: ['*']
       - http:
           path: auth/{userid}
           method: delete
-#          response:
-#            "Access-Control-Allow-Origin": "*"
           cors:
             origin: "*"
-            header: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - Access-Control-Allow-Origin
+              - authorizationToken
       - http:
           path: user/{userid}
           method: get
@@ -68,8 +78,6 @@ functions:
       - http:
           path: user
           method: post
-#          response:
-#            "Access-Control-Allow-Origin": "*"
           cors:
             origin: "*"
             headers:
@@ -82,44 +90,66 @@ functions:
               - Access-Control-Allow-Origin
               - authorizationToken
 
-      - http:
-          path: user
-          method: put
-#          response:
-#            "Access-Control-Allow-Origin": "*"
-          cors:
-            origin: "*"
-            header: '*'
+#      - http:
+#          path: user
+#          method: put
+#          cors:
+#            origin: "*"
+#            headers:
+#              - Content-Type
+#              - X-Amz-Date
+#              - Authorization
+#              - X-Api-Key
+#              - X-Amz-Security-Token
+#              - X-Amz-User-Agent
+#              - Access-Control-Allow-Origin
+#              - authorizationToken
       - http:
           path: user/{userid}
           method: put
-#          response:
-#            "Access-Control-Allow-Origin": "*"
           cors:
             origin: "*"
-            header: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - Access-Control-Allow-Origin
+              - authorizationToken
       - http:
           path: user/{userid}
           method: delete
-#          response:
-#            "Access-Control-Allow-Origin": "*"
           cors:
             origin: "*"
-            header: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - Access-Control-Allow-Origin
+              - authorizationToken
 
       - http:
           path: expense/{userid}/{id}
           method: get
-#          response:
-#            "Access-Control-Allow-Origin": "*"
           cors:
             origin: "*"
-            header: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - Access-Control-Allow-Origin
+              - authorizationToken
       - http:
           path: expense
           method: post
-#          response:
-#            "Access-Control-Allow-Origin": "*"
           cors:
             origin: "*"
             headers:
@@ -149,19 +179,31 @@ functions:
       - http:
           path: expense/{userid}/{id}
           method: put
-#          response:
-#            "Access-Control-Allow-Origin": "*"
           cors:
             origin: "*"
-            header: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - Access-Control-Allow-Origin
+              - authorizationToken
       - http:
           path: expense/{userid}/{id}
           method: delete
-#          response:
-#            "Access-Control-Allow-Origin": "*"
           cors:
             origin: "*"
-            header: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - Access-Control-Allow-Origin
+              - authorizationToken
 
 plugins:
   - serverless-offline

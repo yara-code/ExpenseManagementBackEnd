@@ -37,7 +37,7 @@ module.exports.handler = (event, context, callback ) => {
                 // event.session.accountId
                 let userId = helper().objectId(event.session.accountId)
 
-                console.log(`account : ${JSON.stringify(account, null, 3)}`);
+                // console.log(`account : ${JSON.stringify(account, null, 3)}`);
 
                 return Promise.resolve(Accounts.update(dbo, userId, {$set: {income:body.amount}}))
                     .then((results ) => {

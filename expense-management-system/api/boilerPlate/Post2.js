@@ -31,7 +31,6 @@ module.exports.handler = (event, context, callback ) => {
             .then(()=>{
                 return Promise.resolve(AuthCredentials.find(dbo, filter))
                     .then((accountCredentials)=>{
-                        console.log(`Post user inside.then in authcreds.find :`);
                         if(accountCredentials.length > 0) {
                             if (body.username == accountCredentials[0].username){
                                 return Promise.reject("Username already exist.");
@@ -50,7 +49,6 @@ module.exports.handler = (event, context, callback ) => {
                     })
             })// first .then
             .then(( ) => {
-                console.log(`password create :`);
                 return Promise.resolve(Password.create(body.password))
                     .catch((error ) => {
                         return Promise.reject(error)
